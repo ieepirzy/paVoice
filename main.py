@@ -24,7 +24,7 @@ def speak(req: SpeakRequest):
     _speaking.set()
     try:
         audio = next(pipeline(req.text, voice=req.voice))
-        pcm_int16 = (audio[2] * 32767).astype(np.int16)
+        pcm_int16 = (audio[2].numpy() * 32767).astype(np.int16)
         
         proc = subprocess.run(
             ["aplay", "-D", ALSA_DEVICE, "-f", "S16_LE", "-r", "24000", "-c", "1"],
